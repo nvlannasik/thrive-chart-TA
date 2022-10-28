@@ -1,16 +1,26 @@
 const router = require("express").Router();
+const axios = require("axios");
 const Chart = require("../Models/Chart");
 const logger = require("../utils/logger");
+require("dotenv").config();
 
 //POST new chart
 
 router.post("/", async (req, res) => {
+  //get product service
+
+  const product = await axios.get(
+    `${process.env.API_GATEWAY}/api/products/${req.body.product}`
+  );
+  const priceProduct = product.data.data.price;
+  const totalPrice = priceProduct * req.body.quantity;
   const chart = new Chart({
     product: req.body.product,
     quantity: req.body.quantity,
-    price: req.body.price,
-    totalPrice: req.body.totalPrice,
+    price: priceProduct,
+    totalPrice: totalPrice,
   });
+
   try {
     const savedChart = await chart.save();
     res.status(201).send({
