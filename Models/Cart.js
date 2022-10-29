@@ -14,5 +14,5 @@ const chartSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-chartSchema.plugin(autoIncrement.plugin, "Chart");
-module.exports = mongoose.model("Chart", chartSchema);
+chartSchema.plugin(autoIncrement.plugin, "Cart");
+module.exports = mongoose.model("Cart", chartSchema);

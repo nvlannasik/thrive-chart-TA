@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-const chartRoutes = require("./routes/chart");
+const cartRoutes = require("./routes/cart");
 const logger = require("./utils/logger");
 
 //middleware
@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Routes
 
-app.use("/api/chart", chartRoutes);
+app.use("/api/cart", cartRoutes);
 
 //connect db
 mongoose.connect(process.env.DB_CONNECTION);

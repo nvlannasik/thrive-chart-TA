@@ -1,11 +1,10 @@
 const router = require("express").Router();
 const axios = require("axios");
-const Chart = require("../Models/Chart");
+const Cart = require("../Models/Cart");
 const logger = require("../utils/logger");
 require("dotenv").config();
 
-//POST new chart
-
+//POST new cart
 router.post("/", async (req, res) => {
   //get product service
 
@@ -14,7 +13,7 @@ router.post("/", async (req, res) => {
   );
   const priceProduct = product.data.data.price;
   const totalPrice = priceProduct * req.body.quantity;
-  const chart = new Chart({
+  const chart = new Cart({
     product: req.body.product,
     quantity: req.body.quantity,
     price: priceProduct,
@@ -22,11 +21,11 @@ router.post("/", async (req, res) => {
   });
 
   try {
-    const savedChart = await chart.save();
+    const savedCart = await cart.save();
     res.status(201).send({
       status: "success",
       message: "Chart created successfully",
-      data: savedChart,
+      data: savedCart,
     });
     logger.info(
       `[${req.method}] - 201 - ${res.statusMessage} - ${req.originalUrl} - ${req.ip}`
@@ -34,7 +33,7 @@ router.post("/", async (req, res) => {
   } catch (err) {
     res.status(400).send({
       status: "error",
-      message: "Chart not created",
+      message: "Cart not created",
       data: err,
     });
     logger.error(
@@ -43,15 +42,14 @@ router.post("/", async (req, res) => {
   }
 });
 
-//GET all charts
-
+//GET all carts
 router.get("/", async (req, res) => {
   try {
-    const charts = await Chart.find();
+    const carts = await Cart.find();
     res.status(200).send({
       status: "success",
-      message: "Charts retrieved successfully",
-      data: charts,
+      message: "Carts retrieved successfully",
+      data: carts,
     });
     logger.info(
       `[${req.method}] - 200 - ${res.statusMessage} - ${req.originalUrl} - ${req.ip}`
@@ -64,14 +62,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-//GET chart by id
-
+//GET cart by id
 router.get("/:id", async (req, res) => {
-  const chart = await Chart.findById(req.params.id);
-  if (!chart) {
+  const cart = await Cart.findById(req.params.id);
+  if (!cart) {
     res.status(404).send({
       status: "error",
-      message: "Chart not found",
+      message: "Cart not found",
     });
     logger.error(
       `[${req.method}] - 404 - ${res.statusMessage} - ${req.originalUrl} - ${req.ip}`
@@ -80,8 +77,8 @@ router.get("/:id", async (req, res) => {
   try {
     res.status(200).send({
       status: "success",
-      message: "Chart retrieved successfully",
-      data: chart,
+      message: "Cart retrieved successfully",
+      data: cart,
     });
     logger.info(
       `[${req.method}] - 200 - ${res.statusMessage} - ${req.originalUrl} - ${req.ip}`
@@ -89,7 +86,7 @@ router.get("/:id", async (req, res) => {
   } catch (err) {
     res.status(400).send({
       status: "error",
-      message: "Chart not retrieved",
+      message: "Cart not retrieved",
       data: err,
     });
     logger.error(
@@ -98,14 +95,14 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//DELETE chart by id
+//DELETE cart by id
 
 router.delete("/:id", async (req, res) => {
-  const removedChart = await Chart.remove({ _id: req.params.id });
-  if (!removedChart) {
+  const removedCart = await Cart.remove({ _id: req.params.id });
+  if (!removedCart) {
     res.status(404).send({
       status: "error",
-      message: "Chart not found",
+      message: "Cart not found",
     });
     logger.error(
       `[${req.method}] - 404 - ${res.statusMessage} - ${req.originalUrl} - ${req.ip}`
@@ -115,7 +112,7 @@ router.delete("/:id", async (req, res) => {
   try {
     res.status(202).send({
       status: "success",
-      message: "Chart deleted successfully",
+      message: "Cart deleted successfully",
     });
     logger.info(
       `[${req.method}] - 202 - ${res.statusMessage} - ${req.originalUrl} - ${req.ip}`
@@ -123,7 +120,7 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     res.status(400).send({
       status: "error",
-      message: "Chart not deleted",
+      message: "Cart not deleted",
       data: err,
     });
     logger.error(
@@ -136,14 +133,14 @@ router.delete("/:id", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   try {
-    const updatedChart = await Chart.updateOne(
+    const updatedCart = await Cart.updateOne(
       { _id: req.params.id },
       { $set: { product: req.body.product } }
     );
     res.status(203).send({
       status: "success",
       message: "Chart updated successfully",
-      data: updatedChart,
+      data: updatedCart,
     });
     logger.info(
       `[${req.method}] - 203 - ${res.statusMessage} - ${req.originalUrl} - ${req.ip}`
