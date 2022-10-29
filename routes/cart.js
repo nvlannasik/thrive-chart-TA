@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
   });
 
   try {
-    const savedCart = await cart.save();
+    const savedCart = await Cart.save();
     res.status(201).send({
       status: "success",
       message: "Chart created successfully",
