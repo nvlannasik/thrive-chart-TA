@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
   );
   const priceProduct = product.data.data.price;
   const totalPrice = priceProduct * req.body.quantity;
-  const chart = new Cart({
+  const cart = new Cart({
     product: req.body.product,
     quantity: req.body.quantity,
     price: priceProduct,
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
   });
 
   try {
-    const savedCart = await Cart.save();
+    const savedCart = await cart.save();
     res.status(201).send({
       status: "success",
       message: "Chart created successfully",
